@@ -34,6 +34,9 @@
     <Reference Include="Nancy">
       <HintPath>..\..\..\Code Gallery\Nancy-0.16.1\Nancy-0.16.1\src\Nancy.Hosting.Aspnet\bin\Debug\Nancy.dll</HintPath>
     </Reference>
+    <Reference Include="Nancy.Authentication.Forms">
+      <HintPath>..\..\..\Code Gallery\Nancy-0.16.1\Nancy-0.16.1\src\Nancy.Authentication.Forms\bin\Debug\Nancy.Authentication.Forms.dll</HintPath>
+    </Reference>
     <Reference Include="Nancy.Hosting.Aspnet">
       <HintPath>..\..\..\Code Gallery\Nancy-0.16.1\Nancy-0.16.1\src\Nancy.Hosting.Aspnet\bin\Debug\Nancy.Hosting.Aspnet.dll</HintPath>
     </Reference>
@@ -52,7 +55,9 @@
     <Compile Include="HomeHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="View\Data.htm" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

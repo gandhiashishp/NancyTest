@@ -54,7 +54,7 @@ $.fn.populate = function (obj, options) {
 	// ------------------------------------------------------------------------------------------
 	// main process function
 	// ------------------------------------------------------------------------------------------
-	populateForm(this, JSON.stringify(obj));
+		populateForm(this, JSON.stringify(obj));
 	// ------------------------------------------------------------------------------------------
 
 	function populateForm(form, jsonData) {
@@ -136,5 +136,6 @@ $.fn.populate = function (obj, options) {
 
 	return this;
 };
+
 
 

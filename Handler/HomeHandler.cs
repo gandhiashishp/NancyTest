@@ -5,6 +5,7 @@ using System.Text;
 using Nancy;
 using Nancy.Security;
 using Nancy.ModelBinding;
+using Nancy.Json.Converters;
 
 namespace Handler
 {
@@ -13,15 +14,36 @@ namespace Handler
 		public Home()
 			: base("handler")
 		{
+
 			Get["/account"] = parameters =>
 			{
 				string response = string.Empty;
 				Accounts objAccount = new Accounts();
 				objAccount.Number = "21212";
 				objAccount.Type = "2";
-				response = Newtonsoft.Json.JsonConvert.SerializeObject(objAccount);
 
-				return response;
+				//response = Newtonsoft.Json.JsonConvert.SerializeObject(objAccount);
+
+				if (this.Request.Headers.ContentType == "application/xml")
+				{
+					return Response.AsXml(objAccount);
+				}
+				else if (this.Request.Headers.ContentType == "application/json")
+				{
+					return Response.AsJson(objAccount);
+				}
+				else
+				{
+					return Response.AsXml(objAccount);
+				}
+	 
+
+				//return Negotiate
+				//    .WithStatusCode(HttpStatusCode.OK)
+				//    .WithContentType(this.Context.Request.Headers.ContentType)
+				//    .WithModel(objAccount);
+
+				//return response;
 			};
 
 			Get["/name"] = parameters =>
@@ -62,10 +84,61 @@ namespace Handler
 					objAccount.Type = "2";
 					objMember.Accounts.Add(objAccount);
 
-					response = Newtonsoft.Json.JsonConvert.SerializeObject(objMember);
-					//response = "This is text response";
+					IMember obj = (IMember)objMember;
+
+					return Negotiate
+					.WithStatusCode(HttpStatusCode.OK)
+					.WithModel(obj);
 				}
-				return response;
+				 return response;
+			};
+
+
+			Get["/names"] = parameters =>
+			{
+				string response = string.Empty;
+
+ 
+				Member objMember = new Member();
+				objMember.Id = "1";
+				objMember.Password = "ashish";
+				objMember.c_unqid = 1;
+				objMember.AreYouHappy = true;
+				objMember.CountryId = 2;
+				objMember.Notes = "This is notes";
+				objMember.Name = "MembeR Name";
+				objMember.Sex = Member.Gener.Female;
+				if (objMember.Hobbies == null) { objMember.Hobbies = new List<string>(); }
+
+				objMember.Hobbies.Add("1");
+				objMember.Hobbies.Add("2");
+
+				if (objMember.TestList == null) { objMember.TestList = new List<int>(); }
+				objMember.TestList.Add(1);
+				objMember.TestList.Add(3);
+
+				if (objMember.Accounts == null) { objMember.Accounts = new List<Accounts>(); }
+				Accounts objAccount = new Accounts();
+				objAccount.Number = "21212";
+				objAccount.Type = "2";
+				objMember.Accounts.Add(objAccount);
+
+				List<IMember> obj = new List<IMember>();
+				obj.Add((IMember)objMember);
+
+				IMember objTemp= (IMember)objMember;
+				objTemp.AreYouHappy = false;
+
+				obj.Add(objTemp);
+				obj.Add((IMember)objMember);
+				obj.Add((IMember)objMember);
+				obj.Add((IMember)objMember);
+
+				return Negotiate
+				.WithStatusCode(HttpStatusCode.OK)
+				.WithModel(obj);
+				 
+				 
 			};
 				
 			Post["/name/{memberid}"] = parameters =>
